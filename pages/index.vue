@@ -113,10 +113,9 @@
 </template>
 
 <script>
-import { computed, defineComponent, useRoute } from '@nuxtjs/composition-api'
 import { Container, Draggable } from "vue-smooth-dnd"
 import { useCardsStore } from '~/store/cards'
-import { reactive, ref, watch } from "@nuxtjs/composition-api"
+import { reactive } from "@nuxtjs/composition-api"
 export default {
   name: 'IndexPage',
   components: {
@@ -127,7 +126,7 @@ export default {
   setup() {
     const store = useCardsStore()
 
-    const draggingCard = ref({
+    const draggingCard = reactive({
       line: '', 
       index: -1,
       cardData: {}

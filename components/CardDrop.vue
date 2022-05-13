@@ -18,9 +18,9 @@ export default defineComponent({
 
 <style scoped>
 .card {
-  background: grey;
+  background: #1f1f23;
   padding:1.4rem;
-  border-radius: 0.4rem;
+  margin: 1rem 1rem 0;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
 }
 </style>

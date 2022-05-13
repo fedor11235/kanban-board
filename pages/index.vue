@@ -2,63 +2,75 @@
 <template>
   <div class="board">
     <div class="lane">
-      <h2 class="lane-title">ON HOLD {{cards.onHold.length}}</h2>
+      <h2 class="lane-title lane-on-holder">ON HOLD {{cards.onHold.length}}</h2>
       <Container 
         group-name="board" 
         @drag-start="handleDragStart('onHold', $event)" 
         @drop="handleDrop('onHold', $event)"
         :get-child-payload="getChildPayload"
-        :drop-placeholder="{ className:'placeholder'}"
       >
         <Draggable v-for="card in cards.onHold" :key="card.id">
-          <CardDrop>Card {{card.id}}</CardDrop>
+          <CardDrop>
+            <p class="textCard"><span class="idCard">id</span>: {{card.id}}</p>
+            <p class="textCard">{{card.text}}</p>
+          </CardDrop>
         </Draggable>
       </Container>
+      <button class="addCard" @click="addCard('onHold')">+ Добавить карточку</button>
     </div>
 
     <div class="lane">
-      <h2 class="lane-title">IN PROGRESS {{cards.inProgress.length}}</h2>
+      <h2 class="lane-title lane-in-progress">IN PROGRESS {{cards.inProgress.length}}</h2>
       <Container 
         group-name="board" 
         @drag-start="handleDragStart('inProgress', $event)" 
         @drop="handleDrop('inProgress', $event)"
         :get-child-payload="getChildPayload"
-        :drop-placeholder="{ className:'placeholder'}"
       >
         <Draggable v-for="card in cards.inProgress" :key="card.id">
-          <CardDrop>Card  {{card.id}}</CardDrop>
+          <CardDrop>
+            <p class="textCard"><span class="idCard">id</span>: {{card.id}}</p>
+            <p class="textCard">{{card.text}}</p>
+          </CardDrop>
         </Draggable>
       </Container>
+      <button class="addCard" @click="addCard('inProgress')">+ Добавить карточку</button>
     </div>
 
     <div class="lane">
-      <h2 class="lane-title">NEED REVIEW {{cards.needReview.length}}</h2>
+      <h2 class="lane-title need-review">NEED REVIEW {{cards.needReview.length}}</h2>
       <Container 
         group-name="board" 
         @drag-start="handleDragStart('needReview', $event)" 
         @drop="handleDrop('needReview', $event)"
         :get-child-payload="getChildPayload"
-        :drop-placeholder="{ className:'placeholder'}"
       >
         <Draggable v-for="card in cards.needReview" :key="card.id">
-          <CardDrop>Card  {{card.id}}</CardDrop>
+          <CardDrop>
+            <p class="textCard"><span class="idCard">id</span>: {{card.id}}</p>
+            <p class="textCard">{{card.text}}</p>
+          </CardDrop>
         </Draggable>
       </Container>
+      <button class="addCard" @click="addCard('needReview')">+ Добавить карточку</button>
     </div>
 
     <div class="lane">
-      <h2 class="lane-title">APPROVED {{cards.approved.length}}</h2>
+      <h2 class="lane-title lane-approved">APPROVED {{cards.approved.length}}</h2>
       <Container 
         group-name="board" 
         @drag-start="handleDragStart('approved', $event)" 
         @drop="handleDrop('approved', $event)"
         :get-child-payload="getChildPayload"
-        :drop-placeholder="{ className:'placeholder'}"
       >
         <Draggable v-for="card in cards.approved" :key="card.id">
-          <CardDrop>Card  {{card.id}}</CardDrop>
+          <CardDrop>
+            <p class="textCard"><span class="idCard">id</span>: {{card.id}}</p>
+            <p class="textCard">{{card.text}}</p>
+          </CardDrop>
         </Draggable>
       </Container>
+      <button class="addCard" @click="addCard('approved')">+ Добавить карточку</button>
     </div>
 
   </div>
@@ -128,6 +140,9 @@ export default {
         index
       }
     },
+    addCard(line){
+      this.cards[line].push({ id: Math.random().toString().substring(5), text: 'exeple1' })
+    }
   }
 }
 </script>
@@ -135,21 +150,50 @@ export default {
 <style scoped>
   .board {
     display: flex;
-    justify-content: center;
-    background: green;
+    padding-top:5rem;
+    justify-content: space-around;
+    align-items: flex-start;
+    background: #383a42;
     height: 100vh;
   }
 
-  .lane {
-    background: white;
-    width: 23rem;
-    height: 30rem;
-    border-radius: 0.8rem;
-    box-shadow: 0 0.1rem 0.2rem 0 rgba(33, 33, 33, 0.1);
+  .lane-title {
+    padding:1rem;
+    color: white;
+    margin: 0;
   }
 
-  .placeholder {
-    background: green;
-    border-radius: 0.4rem;
+  .lane {
+    background: #303038;
+    width: 23rem;
+  }
+
+  .lane-on-holder {
+    background: #f88b4a;
+  }
+  .lane-in-progress {
+    background: #3c8bbe;
+  }
+  .need-review {
+    background: #f5c852;
+  }
+  .lane-approved {
+    background: #4ca468;
+  }
+
+  .idCard {
+    color: #dad7d9;
+  }
+
+  .textCard {
+    color: #5a5f6b;
+  }
+
+  .addCard{
+    width: 100%;
+    padding:1rem;
+    background: #303038;
+    color: #64646c;
+    border: 0;
   }
 </style>

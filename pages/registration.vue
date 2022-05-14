@@ -71,6 +71,8 @@ export default {
             user.user.username = respons.data.username
             user.user.email = respons.data.email
             user.user.token = respons.data.token
+            this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
+            this.$router.replace({path:"/main"})
         }
 
         if (respons.status === 400) {

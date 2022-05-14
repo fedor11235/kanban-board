@@ -108,7 +108,6 @@
       <button v-show="!store.cardsInputText.approved.flagAddCard" class="addCard" @click="store.cardsInputText.approved.flagAddCard = true">+ Добавить карточку</button>
       <button v-show="store.cardsInputText.approved.flagAddCard" class="addCard" @click="addCard('approved')">+ Точно Добавить карточку</button>
     </div>
-
   </div>
 </template>
 
@@ -116,10 +115,12 @@
 import { Container, Draggable } from "vue-smooth-dnd"
 import { useCardsStore } from '@/store/cards'
 import { reactive } from "@nuxtjs/composition-api"
+import cards from "@/api/cards"
+
 export default {
   name: 'MainPage',
-
   layout: "private",
+
   components: {
     Container,
     Draggable
@@ -174,6 +175,11 @@ export default {
       this.store.cardsInputText[line].flagAddCard = false
       this.store.cards[line].push({ id: Math.random().toString().substring(5), text: this.store.cardsInputText[line].text })
       this.store.cardsInputText[line].text = ''
+    }
+
+    async function initStateCards (){
+        const result = await cards.getCards(this.$axios)
+        console.log(result)
     }
 
     return {

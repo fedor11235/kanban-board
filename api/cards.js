@@ -1,15 +1,19 @@
 export default {
-    async userCreate(axios, payload) {
-        const { username, email, password } = payload
-        return await axios.post("/users/create/", { username, email, password });
+    async getCards(axios) {
+        return await axios.get("/cards/");
     },
 
-    async useLogin(axios, payload) {
-        const { username, password } = payload
-        return await axios.post("/users/login/", { username, password });
+    async createCard(axios, payload) {
+        const { row, text } = payload
+        return await axios.post("/cards/", { row, text });
+    },
+
+    async refreshToken(axios, payload) {
+        const { row, seq_num, text } = payload
+        return await axios.patch("/users/refresh_token/", { row, seq_num, text });
     },
 
     async refreshToken(axios) {
-        return await axios.get("/users/refresh_token/", token);
+        return await axios.delete("/cards/{id}/");
     },
 };

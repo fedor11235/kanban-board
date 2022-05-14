@@ -63,8 +63,9 @@ export default {
         const respons = await auth.useLogin(this.$axios, form)
         console.log(respons)
         if(respons.status === 200) {
-            // user.user.username = respons.data.username
             user.user.token = respons.data.token
+            this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
+            this.$router.replace({path:"/main"})
         }
 
         if (respons.status === 400) {

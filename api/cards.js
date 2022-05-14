@@ -5,15 +5,18 @@ export default {
 
     async createCard(axios, payload) {
         const { row, text } = payload
+        console.log(payload)
         return await axios.post("/cards/", { row, text });
     },
 
-    async refreshToken(axios, payload) {
+    async updateCard(axios, payload) {
         const { row, seq_num, text } = payload
-        return await axios.patch("/users/refresh_token/", { row, seq_num, text });
+        console.log({ row, seq_num, text })
+        console.log(payload)
+        return await axios.patch(`/cards/${payload.id}/`, { row, seq_num, text });
     },
 
-    async refreshToken(axios) {
-        return await axios.delete("/cards/{id}/");
+    async deleteCard(axios,idCard) {
+        return await axios.delete(`/cards/${idCard}/`);
     },
 };

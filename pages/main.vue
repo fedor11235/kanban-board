@@ -115,7 +115,7 @@
 import { Container, Draggable } from "vue-smooth-dnd"
 import { useCardsStore } from '@/store/cards'
 import { reactive } from "@nuxtjs/composition-api"
-import cards from "@/api/cards"
+import apiCards from "@/api/cards"
 
 export default {
   name: 'MainPage',
@@ -129,7 +129,7 @@ export default {
   setup() {
     const store = useCardsStore()
 
-    const draggingCard = reactive({
+    let draggingCard = reactive({
       line: '', 
       index: -1,
       cardData: {}
@@ -138,11 +138,11 @@ export default {
     function handleDragStart(lane, dragResult) {
       const { payload, isSource } = dragResult
       if(isSource) {
-        this.draggingCard = {
+        draggingCard = {
           lane,
           index: payload.index,
           cardData: {
-            ...this.store.cards[lane][payload.index]
+            ...store.cards[lane][payload.index]
           }
         }
       }
@@ -150,14 +150,26 @@ export default {
 
     function handleDrop(lane, dropResult) {
       const { removedIndex, addedIndex} = dropResult
-      if(lane===this.draggingCard.line && removedIndex === addedIndex) {
+      if(lane===draggingCard.line && removedIndex === addedIndex) {
         return
       }
       if(removedIndex !== null) {
-        this.store.cards[lane].splice(removedIndex, 1)
+        store.cards[lane].splice(removedIndex, 1)
+        store.cards[lane].forEach((element, index) => {
+          const row = converterLaneToRow(lane)
+          element.row = row;
+          element.seq_num = index;
+          (async()=>await apiCards.updateCard(this.$axios, element))();
+        });
       }
       if(addedIndex !== null) {
-        this.store.cards[lane].splice(addedIndex, 0, this.draggingCard.cardData)
+        store.cards[lane].splice(addedIndex, 0, draggingCard.cardData)
+        store.cards[lane].forEach((element, index) => {
+          const row = converterLaneToRow(lane);
+          element.row = converterLaneToRow(lane);
+          element.seq_num = index;
+          (async()=>await apiCards.updateCard(this.$axios, element))();
+        });
       }
     }
 
@@ -168,18 +180,29 @@ export default {
     }
 
     function deleteCard(lane, idCard){
-      this.store.cards[lane] = this.store.cards[lane].filter((elem)=>elem.id!==idCard)
+      store.cards[lane] = store.cards[lane].filter((elem)=>elem.id!==idCard)
+      apiCards.deleteCard(this.$axios, idCard)
     }
 
-    function addCard(line){
-      this.store.cardsInputText[line].flagAddCard = false
-      this.store.cards[line].push({ id: Math.random().toString().substring(5), text: this.store.cardsInputText[line].text })
-      this.store.cardsInputText[line].text = ''
+    async function addCard(lane){
+      store.cardsInputText[lane].flagAddCard = false
+      store.cards[lane].push({ id: Math.random().toString().substring(5), text: store.cardsInputText[lane].text })
+      const row = converterLaneToRow(lane)
+      await apiCards.createCard(this.$axios, {row, text: store.cardsInputText[lane].text})
+      store.cardsInputText[lane].text = ''
     }
 
-    async function initStateCards (){
-        const result = await cards.getCards(this.$axios)
-        console.log(result)
+    function converterLaneToRow (lane){
+      switch(lane){
+        case 'onHold':
+          return '0'
+        case 'inProgress':
+          return '1'
+        case 'needReview':
+          return '2'
+        case 'approved':
+          return '3'
+      }
     }
 
     return {

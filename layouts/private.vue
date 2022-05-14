@@ -1,27 +1,51 @@
 <template>
-  <Nuxt/>
+  <Nuxt />
 </template>
 <script>
-import { useUserStore } from '@/store/user'
-// import { ref, onMounted } from '@nuxtjs/composition-api'
+import { useUserStore } from "@/store/user";
+import apiCards from "@/api/cards";
+import { useCardsStore } from "@/store/cards";
 
 export default {
-  created () {
-    const user = useUserStore()
-    if (user.user.username === ''){
-      console.log(user.user)
-      this.$router.replace({path:"/"})
-    }
-  }
-}
+  async created() {
+    const user = useUserStore();
+    const store = useCardsStore();
 
-// export default {
-//   setup(){
-//     const user = useUserStore()
-//     onMounted(() => {
-//       this.$router.replace({path:"/"})
-//     })
-//     return user
-//   }
-// }
+
+    if (user.user.token === "") {
+      console.log(user.user);
+      this.$router.replace({ path: "/" });
+    } else {
+      this.$axios.defaults.headers.common['Authorization'] = user.user.token
+
+      const result = await apiCards.getCards(this.$axios);
+
+      const sortCard = {
+        onHold: [],
+        inProgress: [],
+        needReview: [],
+        approved: [],
+      };
+
+      console.log(result.data)
+
+      for (const elem of result.data) {
+        if (elem.row === '0') {
+          sortCard.onHold.push(elem);
+        }
+        if (elem.row === '1') {
+          sortCard.inProgress.push(elem);
+        }
+        if (elem.row === '2') {
+          sortCard.needReview.push(elem);
+        }
+        if (elem.row === '3') {
+          sortCard.approved.push(elem);
+        }
+      }
+
+      store.cards = sortCard;
+    }
+  },
+};
 </script>

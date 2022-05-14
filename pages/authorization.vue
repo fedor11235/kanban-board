@@ -4,10 +4,10 @@
       <form class="form">
         <h1 class="title">Авторизация</h1>
         <input 
-          v-model.trim="form.email" 
+          v-model.trim="form.username" 
           class="input" 
-          placeholder="Введите логин"
-          @change="handlerEmail"
+          placeholder="Введите своё имя"
+          @change="handlerUsername"
           
         />
         <!-- :class="$v.form.email" -->
@@ -28,15 +28,20 @@
 
 <script>
 import { reactive, ref } from "@nuxtjs/composition-api"
+import { useUserStore } from '@/store/user'
+import auth from "@/api/user"
 
 export default {
-  name: 'IndexPage',
+  name: 'AuthorizationPage',
+  layout: 'test',
 
 
   setup() {
+    const user = useUserStore()
+
     const form = reactive({
-      email: '', 
-      password: '',
+      username: '',
+      password: ''
     });
 
     const errorEmail = ref(false)
@@ -45,32 +50,40 @@ export default {
     const ruleEmail = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g;
     const rulePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{6,}/g
 
-    function handlerSubmit(){
+
+    async function handlerSubmit(){
       if(form.email ==="" | form.password ==="") {
         alert("Заполните все поля")
         return
       }
-      if(!(errorEmail.value && errorPassword.value)){
+      else if(!(!errorEmail.value && !errorPassword.value)){
         return
+      }
+      else {
+        const respons = await auth.useLogin(this.$axios, form)
+        console.log(respons)
+        if(respons.status === 200) {
+            // user.user.username = respons.data.username
+            user.user.token = respons.data.token
+        }
+
+        if (respons.status === 400) {
+            alert(respons.data)
+        }
       }
     }
 
-    function handlerEmail(){
-      errorEmail.value = !ruleEmail.test(form.email)
-    }
     function handlerPassword(){
-      errorPassword.value = !rulePassword.test(form.password)
+    //   errorPassword.value = !rulePassword.test(form.password)
     }
 
-    
-
-
+    function handlerUsername(){}
 
     return {
       form,
-      handlerEmail,
       handlerPassword,
       handlerSubmit,
+      handlerUsername,
       errorEmail,
       errorPassword,
     }
@@ -117,9 +130,6 @@ export default {
 
   .input:placeholder {
     color: #717072;
-  }
-  .valid input {
-    border: 1px solid green;
   }
 
   .title {

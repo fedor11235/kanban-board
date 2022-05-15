@@ -9,7 +9,7 @@ export default {
         return await axios.post("/users/login/", { username, password });
     },
 
-    async refreshToken(axios) {
+    async refreshToken(axios, token) {
         return await axios.get("/users/refresh_token/", token);
     },
 };

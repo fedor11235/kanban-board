@@ -25,9 +25,6 @@
         />
         <button class="input-button" @click.prevent="handlerSubmit">Отправить</button>
       </form>
-      <div v-if="errorEmail || errorPassword" class="error">
-          Вы ввели не правильно пароль или емэил
-      </div>
     </div>
   </div>
 </template>
@@ -39,6 +36,7 @@ import auth from "@/api/user"
 
 export default {
   name: 'RegistrationPage',
+  layout: "privateAuth",
 
 
   setup() {
@@ -50,45 +48,49 @@ export default {
       password: '',
     });
 
+    const errorUsername = ref(false)
     const errorEmail = ref(false)
     const errorPassword = ref(false)
 
-    const ruleEmail = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/g;
-    const rulePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{6,}/g
+    const ruleUsername = /^(?=.{1,150}$)[\w.@+-]+$/g;
+    const ruleEmail= /^(?=.{1,128}$)[\w.@+-]+$/g;
+    const rulePassword = /^(?=.{1,128}$)[\w.@+-]+$/g;
 
 
     async function handlerSubmit(){
-      if(form.email ==="" | form.password ==="") {
-        alert("Заполните все поля")
+      if(form.username ==="" | form.password ==="") {
+        alert("Заполните имя пользователя и пароль")
         return
       }
-      else if(!(!errorEmail.value && !errorPassword.value)){
+      else if(!(!errorUsername.value && !errorPassword.value && errorEmail.value)){
+        alert("Вы ввели неверные данные");
         return
       }
       else {
+        try {
         const respons = await auth.userCreate(this.$axios, form)
-        if(respons.status === 201) {
             user.user.username = respons.data.username
             user.user.email = respons.data.email
             user.user.token = respons.data.token
             this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
             this.$router.replace({path:"/main"})
-        }
-
-        if (respons.status === 400) {
-            alert(respons.data)
+        } catch (err) {
+          alert(err);
         }
       }
     }
 
-    function handlerEmail(){
-    //   errorEmail.value = !ruleEmail.test(form.email)
-    }
-    function handlerPassword(){
-    //   errorPassword.value = !rulePassword.test(form.password)
+    function handlerPassword() {
+      errorPassword.value = !rulePassword.test(form.password);
     }
 
-    function handlerUsername(){}
+    function handlerUsername() {
+      errorUsername.value = !ruleUsername.test(form.username);
+    }
+
+    function handlerEmail(){
+      errorEmail.value = !ruleEmail.test(form.email);
+    }
 
     return {
       form,
@@ -98,6 +100,7 @@ export default {
       handlerSubmit,
       errorEmail,
       errorPassword,
+      errorUsername
     }
   }
 }

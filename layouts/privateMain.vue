@@ -3,22 +3,32 @@
 </template>
 <script>
 import { useUserStore } from "@/store/user";
-import apiCards from "@/api/cards";
 import { useCardsStore } from "@/store/cards";
+import apiCards from "@/api/cards";
+import apiUser from "@/api/user";
 
 export default {
   async created() {
     const user = useUserStore();
     const store = useCardsStore();
 
-
     if (user.user.token === "") {
-      console.log(user.user);
       this.$router.replace({ path: "/" });
     } else {
-      this.$axios.defaults.headers.common['Authorization'] = user.user.token
+      this.$axios.defaults.headers.common["Authorization"] = `JWT ${user.user.token}`;
 
-      const result = await apiCards.getCards(this.$axios);
+      let result;
+      try {
+        result = await apiCards.getCards(this.$axios);
+      } catch {
+        const result = await apiUser.refreshToken(this.$axios, user.user.token);
+        user.user.token = result.data.token;
+        this.$axios.defaults.headers.common["Authorization"] = `JWT ${user.user.token}`;
+        result = await apiCards.getCards(this.$axios);
+      }
+
+      if (result.status) {
+      }
 
       const sortCard = {
         onHold: [],
@@ -27,19 +37,17 @@ export default {
         approved: [],
       };
 
-      console.log(result.data)
-
       for (const elem of result.data) {
-        if (elem.row === '0') {
+        if (elem.row === "0") {
           sortCard.onHold.push(elem);
         }
-        if (elem.row === '1') {
+        if (elem.row === "1") {
           sortCard.inProgress.push(elem);
         }
-        if (elem.row === '2') {
+        if (elem.row === "2") {
           sortCard.needReview.push(elem);
         }
-        if (elem.row === '3') {
+        if (elem.row === "3") {
           sortCard.approved.push(elem);
         }
       }

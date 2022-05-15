@@ -307,6 +307,10 @@ export default {
 
     async function addCard(lane) {
       store.cardsInputText[lane].flagAddCard = false;
+      if(store.cardsInputText[lane].text===''){
+        alert('Вы не ввели текст')
+        return
+      }
       const row = converterLaneToRow(lane);
       const newCard = await apiCards.createCard(this.$axios, {
         row,

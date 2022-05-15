@@ -5,12 +5,9 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
+export default {
   name: 'CardDrop',
-  setup() { },
-})
+}
 </script>
 
 
@@ -18,5 +15,8 @@ export default defineComponent({
 .card {
   background: #1f1f23;
   margin: 1rem 1rem 0;
+}
+.card :hover{
+  cursor: move;
 }
 </style>

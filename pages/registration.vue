@@ -52,9 +52,9 @@ export default {
     const errorEmail = ref(false)
     const errorPassword = ref(false)
 
-    const ruleUsername = /^(?=.{1,150}$)[\w.@+-]+$/g;
-    const ruleEmail= /^(?=.{1,128}$)[\w.@+-]+$/g;
-    const rulePassword = /^(?=.{1,128}$)[\w.@+-]+$/g;
+    // const ruleUsername = /^(?=.{1,150}$)[\w.@+-]+$/g;
+    // const ruleEmail= /^(?=.{1,128}$)[\w.@+-]+$/g;
+    // const rulePassword = /^(?=.{1,128}$)[\w.@+-]+$/g;
 
 
     async function handlerSubmit(){
@@ -81,15 +81,15 @@ export default {
     }
 
     function handlerPassword() {
-      errorPassword.value = !rulePassword.test(form.password);
+      // errorPassword.value = !rulePassword.test(form.password);
     }
 
     function handlerUsername() {
-      errorUsername.value = !ruleUsername.test(form.username);
+      // errorUsername.value = !ruleUsername.test(form.username);
     }
 
     function handlerEmail(){
-      errorEmail.value = !ruleEmail.test(form.email);
+      // errorEmail.value = !ruleEmail.test(form.email);
     }
 
     return {

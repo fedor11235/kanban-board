@@ -6,7 +6,7 @@
     <div class="board">
       <div class="lane">
         <h2 class="lane-title lane-on-holder">
-          ON HOLD {{ store.cards.onHold.length }}
+          ON HOLD ({{ store.cards.onHold.length }})
         </h2>
         <Container
           group-name="board"
@@ -41,25 +41,27 @@
             placeholder="Ввести заголовок для этой карточки"
           ></textarea>
         </div>
-        <button
+        <div
           v-show="!store.cardsInputText.onHold.flagAddCard"
           class="addCard"
           @click.prevent="store.cardsInputText.onHold.flagAddCard = true"
         >
-          + Добавить карточку
-        </button>
-        <button
+          <span class="plus">+</span>Добавить карточку
+        </div>
+        <div
           v-show="store.cardsInputText.onHold.flagAddCard"
-          class="addCard"
-          @click.prevent="addCard('onHold')"
+          class="addCardContainer"
         >
-          + Точно Добавить карточку
-        </button>
+          <span class="addCardApprov" @click.prevent="addCard('onHold')">Добавить карточку</span> 
+          <span>
+            <span @click.prevent="store.cardsInputText.onHold.flagAddCard = false" class="deleteApprovCard"></span>
+          </span>
+        </div>
       </div>
 
       <div class="lane">
         <h2 class="lane-title lane-in-progress">
-          IN PROGRESS {{ store.cards.inProgress.length }}
+          IN PROGRESS ({{ store.cards.inProgress.length }})
         </h2>
         <Container
           group-name="board"
@@ -95,25 +97,27 @@
             placeholder="Ввести заголовок для этой карточки"
           ></textarea>
         </div>
-        <button
+        <div
           v-show="!store.cardsInputText.inProgress.flagAddCard"
           class="addCard"
           @click.prevent="store.cardsInputText.inProgress.flagAddCard = true"
         >
-          + Добавить карточку
-        </button>
-        <button
+          <span class="plus">+</span>Добавить карточку
+        </div>
+        <div
           v-show="store.cardsInputText.inProgress.flagAddCard"
-          class="addCard"
-          @click.prevent="addCard('inProgress')"
+          class="addCardContainer"
         >
-          + Точно Добавить карточку
-        </button>
+          <span class="addCardApprov" @click.prevent="addCard('inProgress')">Добавить карточку</span> 
+          <span>
+            <span @click.prevent="store.cardsInputText.inProgress.flagAddCard = false" class="deleteApprovCard"></span>
+          </span>
+        </div>
       </div>
 
       <div class="lane">
         <h2 class="lane-title need-review">
-          NEED REVIEW {{ store.cards.needReview.length }}
+          NEED REVIEW ({{ store.cards.needReview.length }})
         </h2>
         <Container
           group-name="board"
@@ -148,25 +152,27 @@
             placeholder="Ввести заголовок для этой карточки"
           ></textarea>
         </div>
-        <button
+        <div
           v-show="!store.cardsInputText.needReview.flagAddCard"
           class="addCard"
           @click.prevent="store.cardsInputText.needReview.flagAddCard = true"
         >
-          + Добавить карточку
-        </button>
-        <button
+          <span class="plus">+</span>Добавить карточку
+        </div>
+        <div
           v-show="store.cardsInputText.needReview.flagAddCard"
-          class="addCard"
-          @click.prevent="addCard('needReview')"
+          class="addCardContainer"
         >
-          + Точно Добавить карточку
-        </button>
+          <span class="addCardApprov" @click.prevent="addCard('needReview')">Добавить карточку</span> 
+          <span>
+            <span @click.prevent="store.cardsInputText.needReview.flagAddCard = false" class="deleteApprovCard"></span>
+          </span>
+        </div>
       </div>
 
       <div class="lane">
         <h2 class="lane-title lane-approved">
-          APPROVED {{ store.cards.approved.length }}
+          APPROVED ({{ store.cards.approved.length }})
         </h2>
         <Container
           group-name="board"
@@ -201,20 +207,22 @@
             placeholder="Ввести заголовок для этой карточки"
           ></textarea>
         </div>
-        <button
+        <div
           v-show="!store.cardsInputText.approved.flagAddCard"
           class="addCard"
           @click.prevent="store.cardsInputText.approved.flagAddCard = true"
         >
-          + Добавить карточку
-        </button>
-        <button
+          <span class="plus">+</span>Добавить карточку
+        </div>
+        <div
           v-show="store.cardsInputText.approved.flagAddCard"
-          class="addCard"
-          @click.prevent="addCard('approved')"
+          class="addCardContainer"
         >
-          + Точно Добавить карточку
-        </button>
+          <span class="addCardApprov" @click.prevent="addCard('approved')">Добавить карточку</span> 
+          <span>
+            <span @click.prevent="store.cardsInputText.approved.flagAddCard = false" class="deleteApprovCard"></span>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -365,10 +373,12 @@ export default {
   height: 3rem;
   width: 6rem;
   background: #be3c51;
+  cursor:pointer;
   color: white;
   border:0;
   outline:none;
 }
+
 .board {
   display: flex;
   padding-top: 5rem;
@@ -403,10 +413,26 @@ export default {
 }
 
 .deleteCard {
+  position: absolute;
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: #545558;
+}
+.deleteCard:hover {
+  opacity: 1;
+}
+.deleteCard:before, .deleteCard:after {
+  position: absolute;
+  cursor: pointer;
+  left: -0.5rem;
+  content: ' ';
+  height: 1rem;
+  width: 2px;
+  background-color: #333;
+}
+.deleteCard:before {
+  transform: rotate(45deg);
+}
+.deleteCard:after {
+  transform: rotate(-45deg);
 }
 
 .containerDeleteCard {
@@ -446,14 +472,76 @@ export default {
 }
 
 .addCard {
+  display: flex;
   width: 100%;
-  padding: 1rem;
+  cursor: pointer;
+  height: 3rem;
+  align-items: center;
   background: #303038;
   color: #64646c;
   border: 0;
 }
 
+.addCardContainer{
+  display: flex;
+  width: 100%;
+  height: 4rem;
+  align-items: center;
+  background: #303038;
+  color: #64646c;
+  border: 0;
+}
+
+.addCardApprov {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: #616062;
+  color: #dad7d9;
+  height: 2rem;
+  margin-left: 1rem;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.addCardApprov:hover {
+  background: #515051;
+}
+
+.addCardApprov:active {
+  background: #616062;
+}
+.deleteApprovCard {
+  height: 1rem;
+  position: absolute;
+  display: block;
+}
+.deleteApprovCard:hover {
+  opacity: 1;
+}
+.deleteApprovCard:before, .deleteApprovCard:after {
+  position: absolute;
+  cursor: pointer;
+  left: 2rem;
+  bottom: 0.3rem;
+  content: ' ';
+  height: 1.3rem;
+  width: 2px;
+  background-color: #95969e;
+}
+.deleteApprovCard:before {
+  transform: rotate(45deg);
+}
+.deleteApprovCard:after {
+  transform: rotate(-45deg);
+}
+
 .addCard:hover {
   background: #27272d;
+}
+
+.plus {
+  margin:1rem;
+  font-size: 2.5rem;
 }
 </style>

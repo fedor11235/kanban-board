@@ -43,8 +43,8 @@ export default {
     let errorUsername = ref(false);
     let errorPassword = ref(false);
 
-    const ruleUsername = /^(?=.{1,150}$)[\w.@+-]+$/g;
-    const rulePassword = /^(?=.{1,128}$)[\w.@+-]+$/g;
+    // const ruleUsername = /^(?=.{1,150}$)[\w.@+-]+$/g;
+    // const rulePassword = /^(?=.{1,128}$)[\w.@+-]+$/g;
 
     async function handlerSubmit() {
       if ((form.username === "") | (form.password === "")) {
@@ -68,11 +68,11 @@ export default {
     }
 
     function handlerPassword() {
-      errorPassword.value = !rulePassword.test(form.password);
+      // errorPassword.value = !rulePassword.test(form.password);
     }
 
     function handlerUsername() {
-      errorUsername.value = !ruleUsername.test(form.username);
+      // errorUsername.value = !ruleUsername.test(form.username);
     }
 
     return {
@@ -80,6 +80,8 @@ export default {
       handlerPassword,
       handlerSubmit,
       handlerUsername,
+      errorUsername,
+      errorUsername
     };
   },
 };

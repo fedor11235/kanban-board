@@ -1,11 +1,11 @@
 <template>
-  <div class="index">
-    <div class="container-index">
-      <div class="authorization">
-        <NuxtLink class="link" to="/authorization">Авторизироваться</NuxtLink>
+  <div class='index'>
+    <div class='container-index'>
+      <div class='authorization'>
+        <NuxtLink class='link' to='/authorization'>Авторизироваться</NuxtLink>
       </div>
-      <div class="registration">
-        <NuxtLink class="link" to="/registration">Регистрироваться</NuxtLink>
+      <div class='registration'>
+        <NuxtLink class='link' to='/registration'>Регистрироваться</NuxtLink>
       </div>
     </div>
   </div>

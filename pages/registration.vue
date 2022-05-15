@@ -1,42 +1,42 @@
 <template>
-  <div class="auth">
-    <div class="container-form">
-      <form class="form">
-        <h1 class="title">Регистрация</h1>
+  <div class='auth'>
+    <div class='container-form'>
+      <form class='form'>
+        <h1 class='title'>Регистрация</h1>
         <input 
-          v-model.trim="form.username" 
-          class="input" 
-          placeholder="Введите своё имя"
-          @change="handlerUsername"
+          v-model.trim='form.username' 
+          class='input' 
+          placeholder='Введите своё имя'
+          @change='handlerUsername'
           
         />
         <input 
-          v-model.trim="form.email" 
-          class="input" 
-          placeholder="Введите свой емэил"
-          @change="handlerEmail"
+          v-model.trim='form.email' 
+          class='input' 
+          placeholder='Введите свой емэил'
+          @change='handlerEmail'
           
         />
         <input 
-          v-model.trim="form.password" 
-          class="input" 
-          placeholder="Введите пароль" 
-          @change="handlerPassword"
+          v-model.trim='form.password' 
+          class='input' 
+          placeholder='Введите пароль' 
+          @change='handlerPassword'
         />
-        <button class="input-button" @click.prevent="handlerSubmit">Отправить</button>
+        <button class='input-button' @click.prevent='handlerSubmit'>Отправить</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref } from "@nuxtjs/composition-api"
+import { reactive, ref } from '@nuxtjs/composition-api'
 import { useUserStore } from '@/store/user'
-import auth from "@/api/user"
+import auth from '@/api/user'
 
 export default {
   name: 'RegistrationPage',
-  layout: "privateAuth",
+  layout: 'privateAuth',
 
 
   setup() {
@@ -58,12 +58,12 @@ export default {
 
 
     async function handlerSubmit(){
-      if(form.username ==="" | form.password ==="") {
-        alert("Заполните имя пользователя и пароль")
+      if(form.username ==='' | form.password ==='') {
+        alert('Заполните имя пользователя и пароль')
         return
       }
       else if(!(!errorUsername.value && !errorPassword.value && errorEmail.value)){
-        alert("Вы ввели неверные данные");
+        alert('Вы ввели неверные данные');
         return
       }
       else {
@@ -73,7 +73,7 @@ export default {
             user.user.email = respons.data.email
             user.user.token = respons.data.token
             this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
-            this.$router.replace({path:"/main"})
+            this.$router.replace({path:'/main'})
         } catch (err) {
           alert(err);
         }

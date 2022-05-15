@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
-import { reactive } from "@nuxtjs/composition-api"
+import { reactive } from '@nuxtjs/composition-api'
 
 
 export const useUserStore = defineStore('user', () => {

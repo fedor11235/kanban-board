@@ -1,21 +1,21 @@
 <template>
-  <div class="auth">
-    <div class="container-form">
-      <form class="form">
-        <h1 class="title">Авторизация</h1>
+  <div class='auth'>
+    <div class='container-form'>
+      <form class='form'>
+        <h1 class='title'>Авторизация</h1>
         <input
-          v-model="form.username"
-          class="input"
-          placeholder="Введите своё имя"
-          @change="handlerUsername"
+          v-model='form.username'
+          class='input'
+          placeholder='Введите своё имя'
+          @change='handlerUsername'
         />
         <input
-          v-model="form.password"
-          class="input"
-          placeholder="Введите пароль"
-          @change="handlerPassword"
+          v-model='form.password'
+          class='input'
+          placeholder='Введите пароль'
+          @change='handlerPassword'
         />
-        <button class="input-button" @click.prevent="handlerSubmit">
+        <button class='input-button' @click.prevent='handlerSubmit'>
           Отправить
         </button>
       </form>
@@ -24,20 +24,20 @@
 </template>
 
 <script>
-import { reactive, ref } from "@nuxtjs/composition-api";
-import { useUserStore } from "@/store/user";
-import auth from "@/api/user";
+import { reactive, ref } from '@nuxtjs/composition-api';
+import { useUserStore } from '@/store/user';
+import auth from '@/api/user';
 
 export default {
-  name: "AuthorizationPage",
-  layout: "privateAuth",
+  name: 'AuthorizationPage',
+  layout: 'privateAuth',
 
   setup() {
     const user = useUserStore();
 
     const form = reactive({
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     });
 
     let errorUsername = ref(false);
@@ -47,20 +47,20 @@ export default {
     // const rulePassword = /^(?=.{1,128}$)[\w.@+-]+$/g;
 
     async function handlerSubmit() {
-      if ((form.username === "") | (form.password === "")) {
-        alert("Заполните все поля");
+      if ((form.username === '') | (form.password === '')) {
+        alert('Заполните все поля');
         return;
       } else if (!(!errorUsername.value && !errorPassword.value)) {
-        alert("Вы ввели неверное имя пользователя или неверный пароль");
+        alert('Вы ввели неверное имя пользователя или неверный пароль');
         return;
       } else {
         try {
           const respons = await auth.useLogin(this.$axios, form);
           user.user.token = respons.data.token;
           this.$axios.defaults.headers.common[
-            "Authorization"
+            'Authorization'
           ] = `JWT ${respons.data.token}`;
-          this.$router.replace({ path: "/main" });
+          this.$router.replace({ path: '/main' });
         } catch (err) {
           alert(err);
         }

@@ -1,8 +1,8 @@
 <template>
-  <div class="error">
-    <h1 class="error-title link" v-if="error.statusCode === 404">Страница не найдена</h1>
-    <h1 class="error-title link" v-else>Произошла ошибка</h1>
-    <NuxtLink class="error-link link" to="/">Кликни для возврата на главную страницу</NuxtLink>
+  <div class='error'>
+    <h1 class='error-title link' v-if='error.statusCode === 404'>Страница не найдена</h1>
+    <h1 class='error-title link' v-else>Произошла ошибка</h1>
+    <NuxtLink class='error-link link' to='/'>Кликни для возврата на главную страницу</NuxtLink>
   </div>
 </template>
 

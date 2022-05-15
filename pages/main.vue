@@ -1,226 +1,226 @@
 <template>
-  <div class="main">
-    <div class="header">
-      <button class="exit" @click.prevent="exit()">Выход</button>
+  <div class='main'>
+    <div class='header'>
+      <button class='exit' @click.prevent='exit()'>Выход</button>
     </div>
-    <div class="board">
-      <div class="lane">
-        <h2 class="lane-title lane-on-holder">
+    <div class='board'>
+      <div class='lane'>
+        <h2 class='lane-title lane-on-holder'>
           ON HOLD ({{ store.cards.onHold.length }})
         </h2>
         <Container
-          group-name="board"
+          group-name='board'
           @drag-start="handleDragStart('onHold', $event)"
           @drop="handleDrop('onHold', $event)"
-          :get-child-payload="getChildPayload"
+          :get-child-payload='getChildPayload'
         >
-          <Draggable v-for="card in store.cards.onHold" :key="card.id">
+          <Draggable v-for='card in store.cards.onHold' :key='card.id'>
             <CardDrop>
-              <div class="containerDeleteCard">
+              <div class='containerDeleteCard'>
                 <div
-                  class="deleteCard"
+                  class='deleteCard'
                   @click.prevent="deleteCard('onHold', card.id)"
                 ></div>
               </div>
-              <div class="containerTextCard">
-                <p class="textCard">
-                  <span class="idCard">id</span>: {{ card.id }}
+              <div class='containerTextCard'>
+                <p class='textCard'>
+                  <span class='idCard'>id</span>: {{ card.id }}
                 </p>
-                <p class="textCard">{{ card.text }}</p>
+                <p class='textCard'>{{ card.text }}</p>
               </div>
             </CardDrop>
           </Draggable>
         </Container>
         <div
-          v-show="store.cardsInputText.onHold.flagAddCard"
-          class="containerAddTextCard"
+          v-show='store.cardsInputText.onHold.flagAddCard'
+          class='containerAddTextCard'
         >
           <textarea
-            v-model="store.cardsInputText.onHold.text"
-            class="addTextCard"
-            placeholder="Ввести заголовок для этой карточки"
+            v-model='store.cardsInputText.onHold.text'
+            class='addTextCard'
+            placeholder='Ввести заголовок для этой карточки'
           ></textarea>
         </div>
         <div
-          v-show="!store.cardsInputText.onHold.flagAddCard"
-          class="addCard"
-          @click.prevent="store.cardsInputText.onHold.flagAddCard = true"
+          v-show='!store.cardsInputText.onHold.flagAddCard'
+          class='addCard'
+          @click.prevent='store.cardsInputText.onHold.flagAddCard = true'
         >
-          <span class="plus">+</span>Добавить карточку
+          <span class='plus'>+</span>Добавить карточку
         </div>
         <div
-          v-show="store.cardsInputText.onHold.flagAddCard"
-          class="addCardContainer"
+          v-show='store.cardsInputText.onHold.flagAddCard'
+          class='addCardContainer'
         >
-          <span class="addCardApprov" @click.prevent="addCard('onHold')">Добавить карточку</span> 
+          <span class='addCardApprov' @click.prevent="addCard('onHold')">Добавить карточку</span> 
           <span>
-            <span @click.prevent="store.cardsInputText.onHold.flagAddCard = false" class="deleteApprovCard"></span>
+            <span @click.prevent='store.cardsInputText.onHold.flagAddCard = false' class='deleteApprovCard'></span>
           </span>
         </div>
       </div>
 
-      <div class="lane">
-        <h2 class="lane-title lane-in-progress">
+      <div class='lane'>
+        <h2 class='lane-title lane-in-progress'>
           IN PROGRESS ({{ store.cards.inProgress.length }})
         </h2>
         <Container
-          group-name="board"
+          group-name='board'
           @drag-start="handleDragStart('inProgress', $event)"
           @drop="handleDrop('inProgress', $event)"
-          :get-child-payload="getChildPayload"
+          :get-child-payload='getChildPayload'
         >
-          <Draggable v-for="card in store.cards.inProgress" :key="card.id">
+          <Draggable v-for='card in store.cards.inProgress' :key='card.id'>
             <CardDrop>
-              <div class="containerDeleteCard">
+              <div class='containerDeleteCard'>
                 <div
-                  class="deleteCard"
+                  class='deleteCard'
                   @click.prevent="deleteCard('inProgress', card.id)"
                 ></div>
               </div>
-              <div class="containerTextCard">
-                <p class="textCard">
-                  <span class="idCard">id</span>: {{ card.id }}
+              <div class='containerTextCard'>
+                <p class='textCard'>
+                  <span class='idCard'>id</span>: {{ card.id }}
                 </p>
-                <p class="textCard">{{ card.text }}</p>
+                <p class='textCard'>{{ card.text }}</p>
               </div>
             </CardDrop>
           </Draggable>
         </Container>
 
         <div
-          v-show="store.cardsInputText.inProgress.flagAddCard"
-          class="containerAddTextCard"
+          v-show='store.cardsInputText.inProgress.flagAddCard'
+          class='containerAddTextCard'
         >
           <textarea
-            v-model="store.cardsInputText.inProgress.text"
-            class="addTextCard"
-            placeholder="Ввести заголовок для этой карточки"
+            v-model='store.cardsInputText.inProgress.text'
+            class='addTextCard'
+            placeholder='Ввести заголовок для этой карточки'
           ></textarea>
         </div>
         <div
-          v-show="!store.cardsInputText.inProgress.flagAddCard"
-          class="addCard"
-          @click.prevent="store.cardsInputText.inProgress.flagAddCard = true"
+          v-show='!store.cardsInputText.inProgress.flagAddCard'
+          class='addCard'
+          @click.prevent='store.cardsInputText.inProgress.flagAddCard = true'
         >
-          <span class="plus">+</span>Добавить карточку
+          <span class='plus'>+</span>Добавить карточку
         </div>
         <div
-          v-show="store.cardsInputText.inProgress.flagAddCard"
-          class="addCardContainer"
+          v-show='store.cardsInputText.inProgress.flagAddCard'
+          class='addCardContainer'
         >
-          <span class="addCardApprov" @click.prevent="addCard('inProgress')">Добавить карточку</span> 
+          <span class='addCardApprov' @click.prevent="addCard('inProgress')">Добавить карточку</span> 
           <span>
-            <span @click.prevent="store.cardsInputText.inProgress.flagAddCard = false" class="deleteApprovCard"></span>
+            <span @click.prevent='store.cardsInputText.inProgress.flagAddCard = false' class='deleteApprovCard'></span>
           </span>
         </div>
       </div>
 
-      <div class="lane">
-        <h2 class="lane-title need-review">
+      <div class='lane'>
+        <h2 class='lane-title need-review'>
           NEED REVIEW ({{ store.cards.needReview.length }})
         </h2>
         <Container
-          group-name="board"
+          group-name='board'
           @drag-start="handleDragStart('needReview', $event)"
           @drop="handleDrop('needReview', $event)"
-          :get-child-payload="getChildPayload"
+          :get-child-payload='getChildPayload'
         >
-          <Draggable v-for="card in store.cards.needReview" :key="card.id">
+          <Draggable v-for='card in store.cards.needReview' :key='card.id'>
             <CardDrop>
-              <div class="containerDeleteCard">
+              <div class='containerDeleteCard'>
                 <div
-                  class="deleteCard"
+                  class='deleteCard'
                   @click.prevent="deleteCard('needReview', card.id)"
                 ></div>
               </div>
-              <div class="containerTextCard">
-                <p class="textCard">
-                  <span class="idCard">id</span>: {{ card.id }}
+              <div class='containerTextCard'>
+                <p class='textCard'>
+                  <span class='idCard'>id</span>: {{ card.id }}
                 </p>
-                <p class="textCard">{{ card.text }}</p>
+                <p class='textCard'>{{ card.text }}</p>
               </div>
             </CardDrop>
           </Draggable>
         </Container>
         <div
-          v-show="store.cardsInputText.needReview.flagAddCard"
-          class="containerAddTextCard"
+          v-show='store.cardsInputText.needReview.flagAddCard'
+          class='containerAddTextCard'
         >
           <textarea
-            v-model="store.cardsInputText.needReview.text"
-            class="addTextCard"
-            placeholder="Ввести заголовок для этой карточки"
+            v-model='store.cardsInputText.needReview.text'
+            class='addTextCard'
+            placeholder='Ввести заголовок для этой карточки'
           ></textarea>
         </div>
         <div
-          v-show="!store.cardsInputText.needReview.flagAddCard"
-          class="addCard"
-          @click.prevent="store.cardsInputText.needReview.flagAddCard = true"
+          v-show='!store.cardsInputText.needReview.flagAddCard'
+          class='addCard'
+          @click.prevent='store.cardsInputText.needReview.flagAddCard = true'
         >
-          <span class="plus">+</span>Добавить карточку
+          <span class='plus'>+</span>Добавить карточку
         </div>
         <div
-          v-show="store.cardsInputText.needReview.flagAddCard"
-          class="addCardContainer"
+          v-show='store.cardsInputText.needReview.flagAddCard'
+          class='addCardContainer'
         >
-          <span class="addCardApprov" @click.prevent="addCard('needReview')">Добавить карточку</span> 
+          <span class='addCardApprov' @click.prevent="addCard('needReview')">Добавить карточку</span> 
           <span>
-            <span @click.prevent="store.cardsInputText.needReview.flagAddCard = false" class="deleteApprovCard"></span>
+            <span @click.prevent='store.cardsInputText.needReview.flagAddCard = false' class='deleteApprovCard'></span>
           </span>
         </div>
       </div>
 
-      <div class="lane">
-        <h2 class="lane-title lane-approved">
+      <div class='lane'>
+        <h2 class='lane-title lane-approved'>
           APPROVED ({{ store.cards.approved.length }})
         </h2>
         <Container
-          group-name="board"
+          group-name='board'
           @drag-start="handleDragStart('approved', $event)"
           @drop="handleDrop('approved', $event)"
-          :get-child-payload="getChildPayload"
+          :get-child-payload='getChildPayload'
         >
-          <Draggable v-for="card in store.cards.approved" :key="card.id">
+          <Draggable v-for='card in store.cards.approved' :key='card.id'>
             <CardDrop>
-              <div class="containerDeleteCard">
+              <div class='containerDeleteCard'>
                 <div
-                  class="deleteCard"
+                  class='deleteCard'
                   @click.prevent="deleteCard('approved', card.id)"
                 ></div>
               </div>
-              <div class="containerTextCard">
-                <p class="textCard">
-                  <span class="idCard">id</span>: {{ card.id }}
+              <div class='containerTextCard'>
+                <p class='textCard'>
+                  <span class='idCard'>id</span>: {{ card.id }}
                 </p>
-                <p class="textCard">{{ card.text }}</p>
+                <p class='textCard'>{{ card.text }}</p>
               </div>
             </CardDrop>
           </Draggable>
         </Container>
         <div
-          v-show="store.cardsInputText.approved.flagAddCard"
-          class="containerAddTextCard"
+          v-show='store.cardsInputText.approved.flagAddCard'
+          class='containerAddTextCard'
         >
           <textarea
-            v-model="store.cardsInputText.approved.text"
-            class="addTextCard"
-            placeholder="Ввести заголовок для этой карточки"
+            v-model='store.cardsInputText.approved.text'
+            class='addTextCard'
+            placeholder='Ввести заголовок для этой карточки'
           ></textarea>
         </div>
         <div
-          v-show="!store.cardsInputText.approved.flagAddCard"
-          class="addCard"
-          @click.prevent="store.cardsInputText.approved.flagAddCard = true"
+          v-show='!store.cardsInputText.approved.flagAddCard'
+          class='addCard'
+          @click.prevent='store.cardsInputText.approved.flagAddCard = true'
         >
-          <span class="plus">+</span>Добавить карточку
+          <span class='plus'>+</span>Добавить карточку
         </div>
         <div
-          v-show="store.cardsInputText.approved.flagAddCard"
-          class="addCardContainer"
+          v-show='store.cardsInputText.approved.flagAddCard'
+          class='addCardContainer'
         >
-          <span class="addCardApprov" @click.prevent="addCard('approved')">Добавить карточку</span> 
+          <span class='addCardApprov' @click.prevent="addCard('approved')">Добавить карточку</span> 
           <span>
-            <span @click.prevent="store.cardsInputText.approved.flagAddCard = false" class="deleteApprovCard"></span>
+            <span @click.prevent='store.cardsInputText.approved.flagAddCard = false' class='deleteApprovCard'></span>
           </span>
         </div>
       </div>
@@ -229,15 +229,15 @@
 </template>
 
 <script>
-import { Container, Draggable } from "vue-smooth-dnd";
-import { useCardsStore } from "@/store/cards";
-import { useUserStore } from "@/store/user";
-import { reactive } from "@nuxtjs/composition-api";
-import apiCards from "@/api/cards";
+import { Container, Draggable } from 'vue-smooth-dnd';
+import { useCardsStore } from '@/store/cards';
+import { useUserStore } from '@/store/user';
+import { reactive } from '@nuxtjs/composition-api';
+import apiCards from '@/api/cards';
 
 export default {
-  name: "MainPage",
-  layout: "privateMain",
+  name: 'MainPage',
+  layout: 'privateMain',
 
   components: {
     Container,
@@ -249,7 +249,7 @@ export default {
     const user = useUserStore();
 
     let draggingCard = reactive({
-      line: "",
+      line: '',
       index: -1,
       cardData: {},
     });
@@ -316,24 +316,24 @@ export default {
         id: newCard.data.id,
         text: store.cardsInputText[lane].text,
       });
-      store.cardsInputText[lane].text = "";
+      store.cardsInputText[lane].text = '';
     }
 
     function converterLaneToRow(lane) {
       switch (lane) {
-        case "onHold":
-          return "0";
-        case "inProgress":
-          return "1";
-        case "needReview":
-          return "2";
-        case "approved":
-          return "3";
+        case 'onHold':
+          return '0';
+        case 'inProgress':
+          return '1';
+        case 'needReview':
+          return '2';
+        case 'approved':
+          return '3';
       }
     }
 
     function exit(){
-      this.$router.replace({ path: "/" });
+      this.$router.replace({ path: '/' });
       user.user = {
         username:'',
         email: '',

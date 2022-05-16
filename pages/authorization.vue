@@ -56,7 +56,7 @@ export default {
       } else {
         try {
           const respons = await apiUser.useLogin(this.$axios, form);
-          userStore.user.token = respons.data.token;
+          userStore.setToken (respons.data.token);
           this.$axios.defaults.headers.common[
             'Authorization'
           ] = `JWT ${respons.data.token}`;

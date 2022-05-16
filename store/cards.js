@@ -22,6 +22,10 @@ export const useCardsStore = defineStore('cards', () => {
     approved: { flagAddCard: false, text: '' },
   })
 
+  const setCards = (newValue) => {
+    cards.value = newValue
+  }
+
   const getCards = computed(() => cards.value)
   const getCardsInputText = computed(() => cardsInputText)
   const setCardsInputText = computed(() => cardsInputText)
@@ -93,6 +97,7 @@ export const useCardsStore = defineStore('cards', () => {
   }
 
   return {
+    setCards,
     getCards,
     getCardsInputText,
     setCardsInputText,

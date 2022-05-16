@@ -68,12 +68,13 @@ export default {
       }
       else {
         try {
-        const respons = await apiUser.userCreate(this.$axios, form)
-            userStore.user.username = respons.data.username
-            userStore.user.email = respons.data.email
-            userStore.user.token = respons.data.token
-            this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
-            this.$router.replace({path:'/main'})
+          const respons = await apiUser.userCreate(this.$axios, form)
+          userStore.setUser(respons.data)
+          // userStore.user.username = respons.data.username
+          // userStore.user.email = respons.data.email
+          // userStore.user.token = respons.data.token
+          this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
+          this.$router.replace({path:'/main'})
         } catch (err) {
           alert(err);
         }

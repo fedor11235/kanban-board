@@ -7,16 +7,8 @@
 </template>
 
 <script>
-import { useCardsStore } from '@/store/cards';
 export default {
   props: ['error'],
-  created() {
-    const cardsStore = useCardsStore();
-    // console.log(cardsStore.cards, 'state')
-    // console.log(cardsStore, 'cardsStore')
-    // console.log(cardsStore.getCards, 'getCard')
-    // console.log(cardsStore.getCardsInputText, 'getCardsInputText')
-  }
 }
 </script>
 

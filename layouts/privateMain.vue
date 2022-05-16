@@ -52,7 +52,7 @@ export default {
         }
       }
 
-      cardsStore.cards = sortCard;
+      cardsStore.setCards(sortCard);
     }
   },
 };

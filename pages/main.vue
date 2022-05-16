@@ -233,7 +233,6 @@ import { Container, Draggable } from 'vue-smooth-dnd';
 import { useCardsStore } from '@/store/cards';
 import { useUserStore } from '@/store/user';
 import { reactive } from '@nuxtjs/composition-api';
-import apiCards from '@/api/cards';
 
 export default {
   name: 'MainPage',
@@ -297,19 +296,6 @@ export default {
         return
       }
       cardsStore.addCard(this.$axios, lane)
-    }
-
-    function converterLaneToRow(lane) {
-      switch (lane) {
-        case 'onHold':
-          return '0';
-        case 'inProgress':
-          return '1';
-        case 'needReview':
-          return '2';
-        case 'approved':
-          return '3';
-      }
     }
 
     function exit(){

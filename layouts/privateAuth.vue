@@ -6,9 +6,9 @@ import { useUserStore } from '@/store/user';
 
 export default {
   async created() {
-    const user = useUserStore();
+    const userStore = useUserStore();
 
-    if (user.user.token !== '') {
+    if (userStore.user.token !== '') {
       this.$router.replace({ path: '/main' });
     }
   },

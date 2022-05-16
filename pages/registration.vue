@@ -32,7 +32,7 @@
 <script>
 import { reactive, ref } from '@nuxtjs/composition-api'
 import { useUserStore } from '@/store/user'
-import auth from '@/api/user'
+import apiUser from '@/api/user'
 
 export default {
   name: 'RegistrationPage',
@@ -40,7 +40,7 @@ export default {
 
 
   setup() {
-    const user = useUserStore()
+    const userStore = useUserStore()
 
     const form = reactive({
       username: '',
@@ -62,16 +62,16 @@ export default {
         alert('Заполните имя пользователя и пароль')
         return
       }
-      else if(!(!errorUsername.value && !errorPassword.value && errorEmail.value)){
+      else if(!(!errorUsername.value && !errorPassword.value && !errorEmail.value)){
         alert('Вы ввели неверные данные');
         return
       }
       else {
         try {
-        const respons = await auth.userCreate(this.$axios, form)
-            user.user.username = respons.data.username
-            user.user.email = respons.data.email
-            user.user.token = respons.data.token
+        const respons = await apiUser.userCreate(this.$axios, form)
+            userStore.user.username = respons.data.username
+            userStore.user.email = respons.data.email
+            userStore.user.token = respons.data.token
             this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
             this.$router.replace({path:'/main'})
         } catch (err) {
@@ -170,6 +170,7 @@ export default {
     padding: 1rem;
     margin: 0.5rem;
     width: 17rem;
+    cursor: pointer;
   }
 
 </style>

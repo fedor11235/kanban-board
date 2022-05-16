@@ -22,6 +22,10 @@ export const useCardsStore = defineStore('cards', () => {
     approved: []
   }))
 
+  // const changeCards = (newValue) => {
+  //   cards.value = newValue
+  // }
+
   return {
     cardsInputText,
     cards,

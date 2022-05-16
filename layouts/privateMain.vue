@@ -9,21 +9,21 @@ import apiUser from '@/api/user';
 
 export default {
   async created() {
-    const user = useUserStore();
-    const store = useCardsStore();
+    const userStore = useUserStore();
+    const cardsStore = useCardsStore();
 
-    if (user.user.token === '') {
+    if (userStore.user.token === '') {
       this.$router.replace({ path: '/' });
     } else {
-      this.$axios.defaults.headers.common['Authorization'] = `JWT ${user.user.token}`;
+      this.$axios.defaults.headers.common['Authorization'] = `JWT ${userStore.user.token}`;
 
       let result;
       try {
         result = await apiCards.getCards(this.$axios);
       } catch {
-        const result = await apiUser.refreshToken(this.$axios, user.user.token);
-        user.user.token = result.data.token;
-        this.$axios.defaults.headers.common['Authorization'] = `JWT ${user.user.token}`;
+        const result = await apiUser.refreshToken(this.$axios, userStore.user.token);
+        userStore.user.token = result.data.token;
+        this.$axios.defaults.headers.common['Authorization'] = `JWT ${userStore.user.token}`;
         result = await apiCards.getCards(this.$axios);
       }
 
@@ -52,7 +52,7 @@ export default {
         }
       }
 
-      store.cards = sortCard;
+      cardsStore.cards = sortCard;
     }
   },
 };

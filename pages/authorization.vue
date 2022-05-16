@@ -26,14 +26,14 @@
 <script>
 import { reactive, ref } from '@nuxtjs/composition-api';
 import { useUserStore } from '@/store/user';
-import auth from '@/api/user';
+import apiUser from '@/api/user';
 
 export default {
   name: 'AuthorizationPage',
   layout: 'privateAuth',
 
   setup() {
-    const user = useUserStore();
+    const userStore = useUserStore();
 
     const form = reactive({
       username: '',
@@ -55,8 +55,8 @@ export default {
         return;
       } else {
         try {
-          const respons = await auth.useLogin(this.$axios, form);
-          user.user.token = respons.data.token;
+          const respons = await apiUser.useLogin(this.$axios, form);
+          userStore.user.token = respons.data.token;
           this.$axios.defaults.headers.common[
             'Authorization'
           ] = `JWT ${respons.data.token}`;
@@ -144,5 +144,8 @@ export default {
   padding: 1rem;
   margin: 0.5rem;
   width: 17rem;
+  cursor: pointer;
 }
+
+
 </style>

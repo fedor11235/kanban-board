@@ -36,7 +36,7 @@ export default {
         needReview: [],
         approved: [],
       };
-
+      
       for (const elem of result.data) {
         if (elem.row === '0') {
           sortCard.onHold.push(elem);

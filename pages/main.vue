@@ -261,7 +261,7 @@ export default {
           lane,
           index: payload.index,
           cardData: {
-            ...cardsStore.cards[lane][payload.index],
+            ...cardsStore.getCards[lane][payload.index],
           },
         };
       }
@@ -273,22 +273,10 @@ export default {
         return;
       }
       if (removedIndex !== null) {
-        cardsStore.cards[lane].splice(removedIndex, 1);
-        cardsStore.cards[lane].forEach((element, index) => {
-          const row = converterLaneToRow(lane);
-          element.row = row;
-          element.seq_num = index;
-          (async () => await apiCards.updateCard(this.$axios, element))();
-        });
+        cardsStore.removeCardsOwnRow(this.$axios, lane, removedIndex)
       }
       if (addedIndex !== null) {
-        cardsStore.cards[lane].splice(addedIndex, 0, draggingCard.cardData);
-        cardsStore.cards[lane].forEach((element, index) => {
-          const row = converterLaneToRow(lane);
-          element.row = converterLaneToRow(lane);
-          element.seq_num = index;
-          (async () => await apiCards.updateCard(this.$axios, element))();
-        });
+        cardsStore.movingToAnother(this.$axios, lane, addedIndex, draggingCard)
       }
     }
 
@@ -299,28 +287,16 @@ export default {
     }
 
     function deleteCard(lane, idCard) {
-      cardsStore.cards[lane] = cardsStore.cards[lane].filter(
-        (elem) => elem.id !== idCard
-      );
-      apiCards.deleteCard(this.$axios, idCard);
+      cardsStore.deleteCard(this.$axios, lane, idCard)
     }
 
-    async function addCard(lane) {
+    function addCard(lane) {
       cardsStore.offInputText(lane);
-      if(cardsStore.cardsInputText[lane].text===''){
+      if(cardsStore.getCardsInputText[lane].text===''){
         alert('Вы не ввели текст')
         return
       }
-      const row = converterLaneToRow(lane);
-      const newCard = await apiCards.createCard(this.$axios, {
-        row,
-        text: cardsStore.cardsInputText[lane].text,
-      });
-      cardsStore.cards[lane].push({
-        id: newCard.data.id,
-        text: cardsStore.cardsInputText[lane].text,
-      });
-      cardsStore.cardsInputText[lane].text = '';
+      cardsStore.addCard(this.$axios, lane)
     }
 
     function converterLaneToRow(lane) {

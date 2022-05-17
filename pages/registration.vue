@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import { reactive, ref } from '@nuxtjs/composition-api'
+import { reactive, ref, useContext } from '@nuxtjs/composition-api'
 import { useUserStore } from '@/store/user'
-import apiUser from '@/api/user'
+import { apiUser } from '@/api/user';
 
 export default {
   name: 'RegistrationPage',
@@ -40,7 +40,9 @@ export default {
 
 
   setup() {
-    const userStore = useUserStore()
+    const { $api } = useContext()
+    const { setUser, setToken } = useUserStore()
+    const { userCreate } = apiUser()
 
     const form = reactive({
       username: '',
@@ -68,12 +70,10 @@ export default {
       }
       else {
         try {
-          const respons = await apiUser.userCreate(this.$axios, form)
-          userStore.setUser(respons.data)
-          // userStore.user.username = respons.data.username
-          // userStore.user.email = respons.data.email
-          // userStore.user.token = respons.data.token
-          this.$axios.defaults.headers.common['Authorization'] = `JWT ${respons.data.token}`
+          const respons = await userCreate(form)
+          setUser(respons)
+          $api.defaults.headers.common['Authorization'] = `JWT ${respons.token}`
+          setToken(respons.token)
           this.$router.replace({path:'/main'})
         } catch (err) {
           alert(err);

@@ -1,33 +1,37 @@
 <template>
-  <Nuxt />
+  <!-- <Suspense> -->
+    <Nuxt />
+  <!-- </Suspense> -->
 </template>
 <script>
+import { useContext } from '@nuxtjs/composition-api'
 import { useUserStore } from '@/store/user';
 import { useCardsStore } from '@/store/cards';
-import apiCards from '@/api/cards';
-import apiUser from '@/api/user';
+import { apiCards } from '@/api/cards';
+import { apiUser } from '@/api/user';
 
 export default {
-  async created() {
-    const userStore = useUserStore();
-    const cardsStore = useCardsStore();
+  async setup() {
+    const { refreshToken } = apiUser()
+    const { getCards } = apiCards()
+    const { $api } = useContext()
+    const { getToken, setToken } = useUserStore();
+    const { setCards } = useCardsStore();
 
-    if (userStore.user.token === '') {
-      this.$router.replace({ path: '/' });
+    if (getToken === '') {
+      // this.$router.replace({ path: '/' });
+
     } else {
-      this.$axios.defaults.headers.common['Authorization'] = `JWT ${userStore.user.token}`;
-
       let result;
       try {
-        result = await apiCards.getCards(this.$axios);
+        console.log(getToken, 'getToken!')
+        $api.defaults.headers.common['Authorization'] = `JWT ${getToken}`;
+        result = await getCards();
+        console.log(result)
       } catch {
-        const result = await apiUser.refreshToken(this.$axios, userStore.user.token);
-        userStore.user.token = result.data.token;
-        this.$axios.defaults.headers.common['Authorization'] = `JWT ${userStore.user.token}`;
-        result = await apiCards.getCards(this.$axios);
-      }
-
-      if (result.status) {
+        const result = await refreshToken(getToken);
+        setToken (result.token);
+        result =  await getCards();
       }
 
       const sortCard = {
@@ -36,8 +40,8 @@ export default {
         needReview: [],
         approved: [],
       };
-      
-      for (const elem of result.data) {
+
+      for (const elem of result) {
         if (elem.row === '0') {
           sortCard.onHold.push(elem);
         }
@@ -52,7 +56,7 @@ export default {
         }
       }
 
-      cardsStore.setCards(sortCard);
+      setCards(sortCard);
     }
   },
 };

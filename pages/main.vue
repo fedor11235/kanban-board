@@ -245,7 +245,7 @@ export default {
 
   setup() {
     const cardsStore = useCardsStore();
-    const userStore = useUserStore();
+    const { setToken } = useUserStore();
 
     let draggingCard = reactive({
       line: '',
@@ -272,10 +272,10 @@ export default {
         return;
       }
       if (removedIndex !== null) {
-        cardsStore.removeCardsOwnRow(this.$axios, lane, removedIndex)
+        cardsStore.removeCardsOwnRow(lane, removedIndex)
       }
       if (addedIndex !== null) {
-        cardsStore.movingToAnother(this.$axios, lane, addedIndex, draggingCard)
+        cardsStore.movingToAnother(lane, addedIndex, draggingCard)
       }
     }
 
@@ -286,7 +286,7 @@ export default {
     }
 
     function deleteCard(lane, idCard) {
-      cardsStore.deleteCard(this.$axios, lane, idCard)
+      cardsStore.removeCard(lane, idCard)
     }
 
     function addCard(lane) {
@@ -295,16 +295,16 @@ export default {
         alert('Вы не ввели текст')
         return
       }
-      cardsStore.addCard(this.$axios, lane)
+      cardsStore.addCard(lane)
     }
 
     function exit(){
       this.$router.replace({ path: '/' });
-      userStore.user = {
+      setToken ({
         username:'',
         email: '',
         token: '',
-      }
+      })
     }
 
     return {

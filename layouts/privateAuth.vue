@@ -8,9 +8,9 @@ export default {
   async created() {
     const userStore = useUserStore();
 
-    if (userStore.user.token !== '') {
-      this.$router.replace({ path: '/main' });
-    }
+    // if (userStore.user.token !== '') {
+    //   this.$router.replace({ path: '/main' });
+    // }
   },
 };
 </script>

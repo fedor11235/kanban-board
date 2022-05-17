@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
-import { reactive } from '@nuxtjs/composition-api'
+import { reactive, computed } from '@nuxtjs/composition-api'
 
 
 export const useUserStore = defineStore('user', () => {
@@ -17,11 +17,16 @@ export const useUserStore = defineStore('user', () => {
 
   const setToken = (newValue) => {
     user.value.token = newValue
+
   }
 
+  const getToken = computed(() => user.value.token)
+
   return {
+    user,
     setUser,
     setToken,
+    getToken
   }
 },{ 
   persist:  {

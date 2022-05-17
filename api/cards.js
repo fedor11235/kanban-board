@@ -1,19 +1,31 @@
-export default {
-  async getCards(axios) {
-    return await axios.get('/cards/');
-  },
-  
-  async createCard(axios, payload) {
+import { useContext } from '@nuxtjs/composition-api'
+
+export const apiCards = () => {
+
+  const { $api } = useContext()
+
+  const getCards = async () => {
+    return await $api.get('/cards/');
+  }
+
+  const createCard = async (payload) => {
     const { row, text } = payload
-    return await axios.post('/cards/', { row, text });
-  },
-  
-  async updateCard(axios, payload) {
-    const { row, seq_num, text } = payload
-    return await axios.patch(`/cards/${payload.id}/`, { row, seq_num, text });
-  },
-  
-  async deleteCard(axios,idCard) {
-    return await axios.delete(`/cards/${idCard}/`);
-  },
+    return await $api.post('/cards/', { row, text });
+  }
+
+  const updateCard = async (payload) => {
+    const { row, seq_num, text, id } = payload
+    return await $api.patch(`/cards/${id}/`, { row, seq_num, text });
+  }
+
+  const deleteCard = async (idCard) => {
+    return await $api.delete(`/cards/${idCard}/`);
+  }
+
+  return {
+    getCards,
+    createCard,
+    updateCard,
+    deleteCard
+  }
 };

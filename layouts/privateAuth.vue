@@ -2,15 +2,16 @@
   <Nuxt />
 </template>
 <script>
+import { useRouter } from '@nuxtjs/composition-api';
 import { useUserStore } from '@/store/user';
 
 export default {
-  async created() {
-    const userStore = useUserStore();
-
-    // if (userStore.user.token !== '') {
-    //   this.$router.replace({ path: '/main' });
-    // }
-  },
+  setup(){
+    const { getToken } = useUserStore();
+    const router = useRouter();
+    if (getToken !== '') {
+      router.push('/main')
+    }
+  }
 };
 </script>

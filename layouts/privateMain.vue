@@ -4,7 +4,7 @@
   <!-- </Suspense> -->
 </template>
 <script>
-import { useContext } from '@nuxtjs/composition-api'
+import { useContext, useRouter } from '@nuxtjs/composition-api'
 import { useUserStore } from '@/store/user';
 import { useCardsStore } from '@/store/cards';
 import { apiCards } from '@/api/cards';
@@ -17,17 +17,15 @@ export default {
     const { $api } = useContext()
     const { getToken, setToken } = useUserStore();
     const { setCards } = useCardsStore();
+    const router = useRouter();
 
     if (getToken === '') {
-      // this.$router.replace({ path: '/' });
-
+      router.push('/');
     } else {
       let result;
       try {
-        console.log(getToken, 'getToken!')
         $api.defaults.headers.common['Authorization'] = `JWT ${getToken}`;
         result = await getCards();
-        console.log(result)
       } catch {
         const result = await refreshToken(getToken);
         setToken (result.token);
@@ -55,7 +53,6 @@ export default {
           sortCard.approved.push(elem);
         }
       }
-
       setCards(sortCard);
     }
   },

@@ -245,7 +245,7 @@ export default {
 
   setup() {
     const cardsStore = useCardsStore();
-    const { setToken } = useUserStore();
+    const { setUser } = useUserStore();
 
     let draggingCard = reactive({
       line: '',
@@ -300,7 +300,7 @@ export default {
 
     function exit(){
       this.$router.replace({ path: '/' });
-      setToken ({
+      setUser ({
         username:'',
         email: '',
         token: '',

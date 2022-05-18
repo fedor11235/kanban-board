@@ -232,7 +232,7 @@
 import { Container, Draggable } from 'vue-smooth-dnd';
 import { useCardsStore } from '@/store/cards';
 import { useUserStore } from '@/store/user';
-import { reactive } from '@nuxtjs/composition-api';
+import { reactive, useRouter } from '@nuxtjs/composition-api';
 
 export default {
   name: 'MainPage',
@@ -246,6 +246,7 @@ export default {
   setup() {
     const cardsStore = useCardsStore();
     const { setUser } = useUserStore();
+    const router = useRouter();
 
     let draggingCard = reactive({
       line: '',
@@ -299,13 +300,14 @@ export default {
     }
 
     function exit(){
-      this.$router.replace({ path: '/' });
+      router.push( '/' );
       setUser ({
         username:'',
         email: '',
         token: '',
       })
     }
+    
 
     return {
       cardsStore,

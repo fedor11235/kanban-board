@@ -51,10 +51,8 @@ export default {
     async function handlerSubmit() {
       if ((form.username === '') | (form.password === '')) {
         alert('Заполните все поля');
-        return;
       } else if (!(!errorUsername.value && !errorPassword.value)) {
         alert('Вы ввели неверное имя пользователя или неверный пароль');
-        return;
       } else {
         try {
           const respons = await useLogin(form);
@@ -81,7 +79,6 @@ export default {
       handlerSubmit,
       handlerUsername,
       errorUsername,
-      errorUsername
     };
   },
 };

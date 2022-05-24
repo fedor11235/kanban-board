@@ -27,9 +27,9 @@ export default {
         $api.defaults.headers.common['Authorization'] = `JWT ${getToken}`;
         result = await getCards();
       } catch {
-        const result = await refreshToken(getToken);
-        $api.defaults.headers.common['Authorization'] = `JWT ${result.token}`;
-        setToken (result.token);
+        const token = await refreshToken(getToken);
+        $api.defaults.headers.common['Authorization'] = `JWT ${token.token}`;
+        setToken (token.token);
         result =  await getCards();
       }
 

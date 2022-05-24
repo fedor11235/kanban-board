@@ -62,11 +62,9 @@ export default {
     async function handlerSubmit(){
       if(form.username ==='' | form.password ==='') {
         alert('Заполните имя пользователя и пароль')
-        return
       }
       else if(!(!errorUsername.value && !errorPassword.value && !errorEmail.value)){
         alert('Вы ввели неверные данные');
-        return
       }
       else {
         try {
